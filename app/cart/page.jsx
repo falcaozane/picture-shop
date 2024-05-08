@@ -1,11 +1,12 @@
-'use client'
+'use client';
 import { useCart } from '@/app/context/cartContext';
 import Navbar from '../../components/Navbar';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { FaTrash } from 'react-icons/fa'; // Importing a trash icon for the Remove button
 
 const Cart = () => {
-  const { cart, clearCart } = useCart();
+  const { cart, clearCart, removeFromCart } = useCart(); // Import removeFromCart
   const router = useRouter();
 
   const handlePay = () => {
@@ -25,9 +26,20 @@ const Cart = () => {
           <p>Your cart is empty.</p>
         ) : (
           cart.map((item) => (
-            <div key={item.id} className="flex justify-between p-4 border-b border-gray-300">
-              <span>{item.name}</span>
-              <span>{`Price: $${item.price}`}</span>
+            <div
+              key={item.id}
+              className="flex justify-between items-center p-4 border-b border-gray-300"
+            >
+              <div>
+                <span className="text-xl">{item.name}</span>
+                <span className="ml-4">{`Price: $${item.price}`}</span>
+              </div>
+              <button
+                className="text-red-500 hover:text-red-700 transition-colors duration-200 ease-in-out"
+                onClick={() => removeFromCart(item.id)} // Remove the item from the cart
+              >
+                <FaTrash /> {/* Trash icon for the remove button */}
+              </button>
             </div>
           ))
         )}
@@ -49,4 +61,3 @@ const Cart = () => {
 };
 
 export default Cart;
-
