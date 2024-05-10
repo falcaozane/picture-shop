@@ -1,18 +1,21 @@
 'use client';
 import { useCart } from '@/app/context/cartContext';
+import { useRemovedItems } from '@/app/context/removedItemsContext';
 import Navbar from '../../components/Navbar';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { FaTrash } from 'react-icons/fa'; // Importing a trash icon for the Remove button
+import { FaTrash } from 'react-icons/fa';
 
 const Cart = () => {
-  const { cart, clearCart, removeFromCart } = useCart(); // Import removeFromCart
+  const { cart, clearCartWithRemovedItems, removeFromCart } = useCart();
+  const { addRemovedItems } = useRemovedItems();
   const router = useRouter();
 
   const handlePay = () => {
-    clearCart(); // Clear the cart
+    const removedItemIDs = clearCartWithRemovedItems(); // Get IDs of removed items
+    addRemovedItems(removedItemIDs); // Update the removed items list
     toast.success("Payment Successful!"); // Show success toast
-    router.push('/'); // Redirect to Home page
+    router.push('/'); // Redirect to the home page
   };
 
   const total = cart.reduce((sum, item) => sum + item.price, 0);
@@ -36,9 +39,9 @@ const Cart = () => {
               </div>
               <button
                 className="text-red-500 hover:text-red-700 transition-colors duration-200 ease-in-out"
-                onClick={() => removeFromCart(item.id)} // Remove the item from the cart
+                onClick={() => removeFromCart(item.id)} 
               >
-                <FaTrash /> {/* Trash icon for the remove button */}
+                <FaTrash /> 
               </button>
             </div>
           ))

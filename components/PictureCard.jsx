@@ -2,7 +2,7 @@ const PictureCard = ({ picture, onAddToCart, onRemoveFromCart, isInCart }) => {
   return (
     <div className="p-4 border border-gray-300 rounded-lg shadow-lg hover:shadow-xl hover:border-blue-300 transition-shadow duration-200 ease-in-out">
       <img
-        className="w-full h-40 object-cover rounded-lg"
+        className="w-full h-56 object-cover rounded-lg"
         src={picture.url}
         alt={picture.name}
       />

@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from '@/app/context/cartContext';
+import { RemovedItemsProvider } from '@/app/context/removedItemsContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,15 +14,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    
     <html lang="en">
       <body className={inter.className}>
-        <CartProvider>
-        <ToastContainer position="top-right" autoClose={3000} />
-          {children}
-        </CartProvider>
+        <RemovedItemsProvider>
+          <CartProvider>
+            <ToastContainer position="top-right" autoClose={3000} />
+            {children}
+          </CartProvider>
+        </RemovedItemsProvider>
       </body>
     </html>
-  
   );
 }

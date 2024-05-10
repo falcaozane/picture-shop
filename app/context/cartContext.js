@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { createContext, useState, useContext } from 'react';
 
 // Create a context for the cart
@@ -16,12 +16,14 @@ export const CartProvider = ({ children }) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const clearCart = () => {
+  const clearCartWithRemovedItems = () => {
+    const removedItems = [...cart];
     setCart([]);
+    return removedItems.map(item => item.id); // Return the IDs of the removed items
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCartWithRemovedItems }}>
       {children}
     </CartContext.Provider>
   );
