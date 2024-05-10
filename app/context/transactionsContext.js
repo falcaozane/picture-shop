@@ -11,7 +11,7 @@ export const TransactionsProvider = ({ children }) => {
 
   const addTransaction = (transaction) => {
     setTransactions((prev) => [...prev, transaction]);
-    toast.success("Transaction added to history.");
+    toast.info("Transaction added to history.");
   };
 
   return (

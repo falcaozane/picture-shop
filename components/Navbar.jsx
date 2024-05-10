@@ -21,7 +21,7 @@ const Navbar = () => {
         </li>
         <li>
           {connected ? (
-            <span className='bg-green-500 px-3 py-2 rounded'>Connected: {walletAddress.slice(0, 6)}...</span>
+            <button className='bg-green-500 px-3 py-2 rounded flex items-center'><span className='hidden md:inline-block'>Connected: </span>{walletAddress.slice(0, 6)}...</button>
           ) : (
             <button
               className="bg-blue-500 px-4 py-2 rounded text-white flex items-center hover:bg-blue-700"

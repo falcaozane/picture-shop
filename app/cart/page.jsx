@@ -34,7 +34,7 @@ const Cart = () => {
         to: '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199', // Testnet wallet address
         value: web3.utils.toWei(ethAmount.toString(), 'ether'),
         gas: 21000,
-        blockNumber: web3.eth.getBlockNumber()
+        blockNumber: await web3.eth.getBlockNumber()
       };
 
       const receipt = await web3.eth.sendTransaction(tx);
@@ -94,12 +94,12 @@ const Cart = () => {
           {transactions.length === 0 ? (
             <p>No transactions yet.</p>
           ) : (
-            <ul>
+            <ul className='text-pretty'>
               {transactions.map((txn, index) => (
                 <li key={index} className="border-b p-2">
-                  <span>Transaction Hash: {txn.transactionHash}</span>
+                  <p className='truncate hover:text-clip'>Transaction Hash: {txn.transactionHash}</p>
                   <br />
-                  <span>Block Number: {txn.blockNumber}</span>
+                  <span>Block Number: {txn?.blockNumber}</span>
                 </li>
               ))}
             </ul>
