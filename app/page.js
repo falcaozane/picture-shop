@@ -19,7 +19,7 @@ const Home = () => {
     const fetchPictures = async () => {
       const response = await unsplash.photos.list({
         page: 1,
-        perPage: 9,
+        perPage: 10,
       });
 
       const data = response.response.results.map((photo) => ({
