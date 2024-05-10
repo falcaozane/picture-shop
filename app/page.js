@@ -1,8 +1,9 @@
 'use client';
 import { useCart } from '@/app/context/cartContext';
 import { useRemovedItems } from '@/app/context/removedItemsContext';
-import PictureCard from '../components/PictureCard';
-import Navbar from '../components/Navbar';
+import PictureCard from '@/components/PictureCard';
+import Navbar from '@/components/Navbar';
+
 import Image1 from "@/public/images/sunset.jpg"
 import Image2 from "@/public/images/Mountain.jpg"
 import Image3 from "@/public/images/pexels-jonaskakaroto-736230.jpg"

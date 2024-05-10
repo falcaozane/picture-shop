@@ -1,21 +1,50 @@
 'use client';
 import { useCart } from '@/app/context/cartContext';
 import { useRemovedItems } from '@/app/context/removedItemsContext';
+import { useWallet } from '@/app/context/walletContext';
+import { useTransactions } from '@/app/context/transactionsContext';
 import Navbar from '../../components/Navbar';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import Web3 from 'web3';
 import { FaTrash } from 'react-icons/fa';
 
 const Cart = () => {
-  const { cart, clearCartWithRemovedItems, removeFromCart } = useCart();
+  const { cart, clearCartWithRemovedItems } = useCart();
+  const { walletAddress } = useWallet();
+  const { addTransaction, transactions } = useTransactions(); // <-- New context
   const { addRemovedItems } = useRemovedItems();
   const router = useRouter();
 
-  const handlePay = () => {
+  const handlePay = async () => {
+    if (walletAddress === '') {
+      toast.error("Please connect your wallet");
+      return;
+    }
+
     const removedItemIDs = clearCartWithRemovedItems(); // Get IDs of removed items
-    addRemovedItems(removedItemIDs); // Update the removed items list
-    toast.success("Payment Successful!"); // Show success toast
-    router.push('/'); // Redirect to the home page
+    addRemovedItems(removedItemIDs); // Add these removed item IDs to context
+
+    try {
+      const web3 = new Web3(window.ethereum);
+      const ethAmount = 0.01; 
+
+      const tx = {
+        from: walletAddress,
+        to: '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199', // Testnet wallet address
+        value: web3.utils.toWei(ethAmount.toString(), 'ether'),
+        gas: 21000,
+        blockNumber: web3.eth.getBlockNumber()
+      };
+
+      const receipt = await web3.eth.sendTransaction(tx);
+      addTransaction(receipt); 
+      toast.success("Payment Successful!");
+      router.push('/');
+    } catch (error) {
+      console.error(error);
+      toast.error("Payment failed. Try again.");
+    }
   };
 
   const total = cart.reduce((sum, item) => sum + item.price, 0);
@@ -39,9 +68,9 @@ const Cart = () => {
               </div>
               <button
                 className="text-red-500 hover:text-red-700 transition-colors duration-200 ease-in-out"
-                onClick={() => removeFromCart(item.id)} 
+                onClick={() => removeFromCart(item.id)}
               >
-                <FaTrash /> 
+                <FaTrash />
               </button>
             </div>
           ))
@@ -58,6 +87,24 @@ const Cart = () => {
         >
           Pay
         </button>
+
+        {/* Section to display previous transactions */}
+        <div className="mt-6">
+          <h3 className="text-xl font-bold">Previous Transactions:</h3>
+          {transactions.length === 0 ? (
+            <p>No transactions yet.</p>
+          ) : (
+            <ul>
+              {transactions.map((txn, index) => (
+                <li key={index} className="border-b p-2">
+                  <span>Transaction Hash: {txn.transactionHash}</span>
+                  <br />
+                  <span>Block Number: {txn.blockNumber}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
     </div>
   );

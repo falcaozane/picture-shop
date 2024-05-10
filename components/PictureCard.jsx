@@ -7,7 +7,7 @@ const PictureCard = ({ picture, onAddToCart, onRemoveFromCart, isInCart }) => {
         alt={picture.name}
       />
       <h3 className="mt-2 text-lg font-semibold">{picture.name}</h3>
-      <p className="text-gray-600">{`Price: $${picture.price}`}</p>
+      <p className="text-gray-600">{`Price: ${picture.price} wei`}</p>
       {isInCart ? (
         <button
           className="mt-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors duration-200 ease-in-out"
