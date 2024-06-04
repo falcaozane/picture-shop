@@ -15,6 +15,7 @@ import Image8 from "@/public/images/7.jpg"
 import Image9 from "@/public/images/8.jpg"
 import Image10 from "@/public/images/9.jpg"
 import Image11 from "@/public/images/sunset.jpg"
+import Footer from '@/components/Footer';
 
 
 const staticPictures = [
@@ -54,6 +55,7 @@ const Home = () => {
           />
         ))}
       </div>
+      <Footer />
     </div>
   );
 };
