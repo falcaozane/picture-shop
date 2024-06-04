@@ -42,7 +42,7 @@ const Home = () => {
   );
 
   return (
-    <div>
+    <div className='bg-violet-100'>
       <Navbar />
       <div className="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPictures.map((pic) => (
