@@ -21,14 +21,11 @@ const Cart = () => {
       toast.error("Please connect your wallet");
       return;
     }
-
-    const removedItemIDs = clearCartWithRemovedItems(); // Get IDs of removed items
-    addRemovedItems(removedItemIDs); // Add these removed item IDs to context
-
+  
     try {
       const web3 = new Web3(window.ethereum);
       const ethAmount = 0.01; 
-
+  
       const tx = {
         from: walletAddress,
         to: '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199', // Testnet wallet address
@@ -36,9 +33,13 @@ const Cart = () => {
         gas: 21000,
         blockNumber: await web3.eth.getBlockNumber()
       };
-
+  
       const receipt = await web3.eth.sendTransaction(tx);
       addTransaction(receipt); 
+  
+      const removedItemIDs = clearCartWithRemovedItems(); // Get IDs of removed items
+      addRemovedItems(removedItemIDs); // Add these removed item IDs to context
+  
       toast.success("Payment Successful!");
       router.push('/');
     } catch (error) {
@@ -46,6 +47,7 @@ const Cart = () => {
       toast.error("Payment failed. Try again.");
     }
   };
+  
 
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
