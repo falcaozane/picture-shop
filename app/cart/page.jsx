@@ -10,7 +10,7 @@ import Web3 from 'web3';
 import { FaTrash } from 'react-icons/fa';
 
 const Cart = () => {
-  const { cart, clearCartWithRemovedItems } = useCart();
+  const { cart, clearCartWithRemovedItems, removeFromCart } = useCart();
   const { walletAddress } = useWallet();
   const { addTransaction, transactions } = useTransactions(); // <-- New context
   const { addRemovedItems } = useRemovedItems();
