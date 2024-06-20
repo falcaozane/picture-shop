@@ -40,7 +40,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className='bg-violet-100 h-screen'>
+    <div className='bg-violet-100 h-full'>
       <div className="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {nfts.map((nft) => (
           <div key={nft.tokenId} className="p-4 bg-violet-50 border border-gray-300 rounded-lg shadow-lg hover:shadow-2xl hover:border-blue-300 transition-shadow duration-200 ease-in-out">
