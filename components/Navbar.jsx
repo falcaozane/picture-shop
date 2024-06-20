@@ -1,7 +1,8 @@
+'use client'
 import Link from 'next/link';
 import { FaHome, FaShoppingCart } from 'react-icons/fa';
 import { SiWalletconnect } from "react-icons/si";
-import { useWallet } from '@/app/context/walletContext';
+import { useWallet } from '../app/context/walletContext';
 import { useEffect, useState } from 'react';
 
 const Navbar = () => {
@@ -19,6 +20,15 @@ const Navbar = () => {
           <FaHome className="mr-2" />
           <Link href="/">Home</Link>
         </li>
+        
+        <li className="flex items-center">
+          <FaShoppingCart className="mr-2" />
+          <Link href="/mint">Mint</Link>
+        </li>
+        <li className="flex items-center">
+          <FaShoppingCart className="mr-2" />
+          <Link href="/cart">Cart</Link>
+        </li>
         <li>
           {connected ? (
             <button className='bg-green-500 px-3 py-2 rounded flex items-center'><span className='hidden md:inline-block'>Connected: </span>{walletAddress.slice(0, 6)}...</button>
@@ -31,11 +41,6 @@ const Navbar = () => {
             </button>
           )}
         </li>
-        <li className="flex items-center">
-          <FaShoppingCart className="mr-2" />
-          <Link href="/cart">Cart</Link>
-        </li>
-        
       </ul>
     </nav>
   );

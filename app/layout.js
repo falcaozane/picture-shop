@@ -1,11 +1,13 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from '@/app/context/cartContext';
-import { WalletProvider } from '@/app/context/walletContext';
+import { WalletProvider } from '../app/context/walletContext';
 import { RemovedItemsProvider } from '@/app/context/removedItemsContext';
 import { TransactionsProvider } from '@/app/context/transactionsContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +25,9 @@ export default function RootLayout({ children }) {
             <WalletProvider>
               <CartProvider>
                 <ToastContainer position="top-right" autoClose={3000} />
+                <Navbar />
                 {children}
+                <Footer />
               </CartProvider>
             </WalletProvider>
           </RemovedItemsProvider>

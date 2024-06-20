@@ -1,22 +1,27 @@
-'use client';
-import { createContext, useState, useContext } from 'react';
+'use client'
+import { createContext, useContext, useState } from 'react';
 import Web3 from 'web3';
 
-// Create a context for the wallet
 const WalletContext = createContext();
 
-// Define a provider to manage wallet state
+export const useWallet = () => {
+  return useContext(WalletContext);
+};
+
 export const WalletProvider = ({ children }) => {
   const [walletAddress, setWalletAddress] = useState('');
 
   const connectWallet = async () => {
     if (window.ethereum) {
-      const accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
-      });
-      setWalletAddress(accounts[0]);
+      try {
+        const web3 = new Web3(window.ethereum);
+        const accounts = await web3.eth.requestAccounts();
+        setWalletAddress(accounts[0]);
+      } catch (error) {
+        console.error('Error connecting wallet: ', error);
+      }
     } else {
-      console.error("MetaMask not installed");
+      alert('Please install MetaMask!');
     }
   };
 
@@ -25,9 +30,4 @@ export const WalletProvider = ({ children }) => {
       {children}
     </WalletContext.Provider>
   );
-};
-
-// Custom hook to use the Wallet context
-export const useWallet = () => {
-  return useContext(WalletContext);
 };

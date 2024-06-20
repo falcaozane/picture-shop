@@ -1,61 +1,65 @@
 'use client';
-import { useCart } from '@/app/context/cartContext';
-import { useRemovedItems } from '@/app/context/removedItemsContext';
-import PictureCard from '@/components/PictureCard';
-import Navbar from '@/components/Navbar';
+import { useEffect, useState } from 'react';
+import Web3 from 'web3';
+import PictureNFT from '../contracts/PictureNFT.json'; // ABI of your contract
 
-import Image1 from "@/public/images/sunset.jpg"
-import Image2 from "@/public/images/Mountain.jpg"
-import Image3 from "@/public/images/pexels-jonaskakaroto-736230.jpg"
-import Image4 from "@/public/images/3.jpg"
-import Image5 from "@/public/images/4.jpg"
-import Image6 from "@/public/images/5.jpg"
-import Image7 from "@/public/images/6.jpg"
-import Image8 from "@/public/images/7.jpg"
-import Image9 from "@/public/images/8.jpg"
-import Image10 from "@/public/images/9.jpg"
-import Image11 from "@/public/images/sunset.jpg"
-import Footer from '@/components/Footer';
-
-
-const staticPictures = [
-  { id: '1', name: 'Sunset', price: 20, url: Image1.src },
-  { id: '2', name: 'Mountain', price: 25, url: Image2.src },
-  { id: '3', name: 'Beach', price: 30, url: Image3.src },
-  { id: '4', name: 'Valley', price: 40, url: Image4.src },
-  { id: '5', name: 'Forest', price: 15, url: Image5.src },
-  { id: '6', name: 'Desert', price: 35, url: Image6.src },
-  { id: '7', name: 'Lake', price: 45, url: Image7.src },
-  { id: '8', name: 'River', price: 22, url: Image8.src },
-  { id: '9', name: 'Bridge', price: 33, url: Image9.src },
-  { id: '10', name: 'Valley', price: 18, url: Image10.src },
-  { id: '11', name: 'Field', price: 28, url: Image11.src },
-];
+const contractAddress = '0x1836a7784b45f9ce4b9cd49bb4cf267e810de937';
 
 const Home = () => {
-  const { cart, addToCart, removeFromCart } = useCart();
-  const { removedItems } = useRemovedItems();
+  const [nfts, setNfts] = useState([]);
 
-  // Filter out removed items
-  const filteredPictures = staticPictures.filter(
-    (pic) => !removedItems.includes(pic.id)
-  );
+  useEffect(() => {
+    const fetchNFTs = async () => {
+      if (!window.ethereum) {
+        alert('Please install MetaMask!');
+        return;
+      }
+
+      const web3 = new Web3(window.ethereum);
+      const contract = new web3.eth.Contract(PictureNFT, contractAddress);
+
+      try {
+        const tokenCounter = await contract.methods.tokenCounter().call();
+        console.log('Token Counter:', tokenCounter);
+
+        const nftsData = [];
+
+        for (let i = 0; i < tokenCounter; i++) {
+          const tokenId = i; // token IDs start from 0 to tokenCounter - 1
+          const tokenURI = await contract.methods.tokenURI(tokenId).call();
+          nftsData.push({ tokenId, tokenURI });
+        }
+
+        setNfts(nftsData);
+      } catch (error) {
+        console.error('Error fetching NFTs: ', error);
+      }
+    };
+
+    fetchNFTs();
+  }, []);
 
   return (
-    <div className='bg-violet-100'>
-      <Navbar />
+    <div className='bg-violet-100 h-screen'>
       <div className="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredPictures.map((pic) => (
-          <PictureCard
-            key={pic.id}
-            picture={pic}
-            onAddToCart={() => addToCart(pic)}
-            onRemoveFromCart={() => removeFromCart(pic.id)}
-            isInCart={cart.some((item) => item.id === pic.id)}
-          />
+        {nfts.map((nft) => (
+          <div key={nft.tokenId} className="p-4 bg-violet-50 border border-gray-300 rounded-lg shadow-lg hover:shadow-2xl hover:border-blue-300 transition-shadow duration-200 ease-in-out">
+            <div className="overflow-hidden block rounded-lg">
+              <img
+                className="w-full h-56 object-cover rounded-lg hover:scale-125 ease-in duration-150"
+                src={nft.tokenURI}
+                alt={`NFT ${nft.tokenId}`}
+              />
+            </div>
+            <div className="flex justify-between">
+              <div className="flex-start">
+                <h3 className="mt-2 text-lg font-semibold">NFT {nft.tokenId}</h3>
+                <p className="text-gray-600">Token ID: {nft.tokenId}</p>
+              </div>
+            </div>
+          </div>
         ))}
       </div>
-      <Footer />
     </div>
   );
 };

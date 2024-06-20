@@ -1,7 +1,7 @@
 'use client';
 import { useCart } from '@/app/context/cartContext';
 import { useRemovedItems } from '@/app/context/removedItemsContext';
-import { useWallet } from '@/app/context/walletContext';
+import { useWallet } from '@/app/context/walletContext.js';
 import { useTransactions } from '@/app/context/transactionsContext';
 import Navbar from '../../components/Navbar';
 import { useRouter } from 'next/navigation';
@@ -52,8 +52,7 @@ const Cart = () => {
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   return (
-    <div>
-      <Navbar />
+    <div className='h-screen'>
       <div className="container mx-auto p-6">
         <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
         {cart.length === 0 ? (
