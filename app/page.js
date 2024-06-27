@@ -1,3 +1,4 @@
+'use client'
 import React, { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useCart } from '@/app/context/cartContext';
