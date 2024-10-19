@@ -13,7 +13,7 @@ const Navbar = () => {
   }, [walletAddress]);
 
   return (
-    <nav className="bg-gray-800 p-4 text-white sticky top-1 rounded-lg m-1 z-10 shadow-lg">
+    <nav className="bg-gray-800 p-4 text-white sticky top-1 rounded-lg m-1 z-10 shadow-2xl">
       <ul className="flex justify-between items-center mx-2">
         <li className="flex items-center">
           <FaHome className="mr-2" />
